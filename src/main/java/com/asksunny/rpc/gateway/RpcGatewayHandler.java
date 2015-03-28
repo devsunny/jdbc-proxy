@@ -1,14 +1,22 @@
 package com.asksunny.rpc.gateway;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.ProcessBuilder.Redirect;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.thrift.TException;
 
 import com.asksunny.rpc.gateway.RpcGateway.Iface;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 
 public class RpcGatewayHandler implements Iface {
 
-	public RpcGatewayHandler() {		
+	public RpcGatewayHandler() {
 	}
 
 	@Override
@@ -16,17 +24,21 @@ public class RpcGatewayHandler implements Iface {
 		return System.currentTimeMillis();
 	}
 
+	/**
+	 * parameters - datasource name, sqlQuery;
+	 */
 	@Override
 	public JPResultSetMetaData executeQuery(List<JPValueObject> parameters)
 			throws InvocationException, TException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public JPSimpleQueryResultSet executeSimpleQuery(String datasource,
-			String query) throws InvocationException, TException {
-		// TODO Auto-generated method stub
+			String query) throws InvocationException, TException 
+	{
+		
 		return null;
 	}
 
@@ -48,8 +60,9 @@ public class RpcGatewayHandler implements Iface {
 	public JPResultSetMetaData executePreparedQuery(
 			List<JPValueObject> parameters,
 			List<JPQueryParameter> queryParameters) throws InvocationException,
-			TException {
-		// TODO Auto-generated method stub
+			TException 
+	{
+		
 		return null;
 	}
 
@@ -107,12 +120,41 @@ public class RpcGatewayHandler implements Iface {
 
 		return null;
 	}
+	
+	
 
 	@Override
 	public String executeSimpleCommand(List<JPValueObject> parameters)
 			throws InvocationException, TException {
+		Collection<String> commands = Collections2.transform(parameters,
+				new Function<JPValueObject, String>() {
+					public String apply(JPValueObject input) {
+						return input.getValue();
+					}
+				});
 
-		return null;
+		InputStream stdout = null;
+		String ret = null;
+		try {
+			ProcessBuilder builder = new ProcessBuilder(new ArrayList<>(
+					commands));
+			builder.environment().putAll(System.getenv());
+			builder.redirectError();
+			Process p = builder.start();
+			stdout = p.getInputStream();
+			ret = IOUtils.toString(stdout);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (stdout != null)
+				try {
+					stdout.close();
+				} catch (IOException e) {
+					;
+				}
+		}
+		return ret;
 	}
 
 	/**
