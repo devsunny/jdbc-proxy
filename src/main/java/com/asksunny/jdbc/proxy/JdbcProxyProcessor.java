@@ -1,5 +1,6 @@
 package com.asksunny.jdbc.proxy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.thrift.TException;
@@ -13,6 +14,7 @@ public class JdbcProxyProcessor implements Iface {
 
 	@Override
 	public long ping() throws TException {
+		
 		return System.currentTimeMillis();
 	}
 
@@ -97,8 +99,20 @@ public class JdbcProxyProcessor implements Iface {
 	public List<List<String>> executeOsCommand(
 			List<JPMethodParameter> parameters) throws SQLInvocationException,
 			TException {
-
-		return null;
+		for (JPMethodParameter jpMethodParameter : parameters) {
+			System.out.println(jpMethodParameter.getValue());
+		}
+		List<String> arrays = new ArrayList<>();
+		arrays.add("Test1");
+		
+		List<String> arrays2 = new ArrayList<>();
+		arrays2.add("Test2-1");
+		arrays2.add("Test2-2");
+		
+		List<List<String>> reresults = new ArrayList<>();
+		reresults.add(arrays);
+		reresults.add(arrays2);
+		return  reresults;
 	}
 
 }
