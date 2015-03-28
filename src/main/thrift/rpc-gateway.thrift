@@ -29,7 +29,8 @@ struct JPValueObject{
 
 
 typedef list<JPValueObject> JPValueObjectList
-
+typedef list<string> JPValueList
+typedef list<JPValueList> JPValueListCollection
 
 
 struct JPQueryParamMetaData{
@@ -49,17 +50,18 @@ struct JPQueryParameter{
 	3: optional i32 type,	
 }
 
-typedef list<string> JPValueList
-typedef list<JPValueList> JPValueListCollection
-typedef list<JPQueryParameter> JPQueryParameterList
-
-typedef list<JPQueryParamMetaData> JPQueryParamMetaDataList
-
 struct JPParameterMetaData{	
 	1: required string statementId,
 	2: required i32 paramCount,
 	3: optional JPQueryParamMetaDataList params,
 }
+
+
+typedef list<JPQueryParameter> JPQueryParameterList
+
+typedef list<JPQueryParamMetaData> JPQueryParamMetaDataList
+
+
 
 
 struct JPColumnMetaData{
@@ -118,9 +120,10 @@ service RpcGateway{
 	JPResultSetMetaData executeCallableQuery(1: required JPValueObjectList parameters, 2:  JPQueryParameterList queryParameters) throws (1:InvocationException error),
 	i32 executeCallableUpdate(1: required JPValueObjectList parameters, 2:  JPQueryParameterList queryParameters) throws (1:InvocationException error) ,		
 	JPValueListCollection fetchResult(1: JPValueObjectList parameters) throws (1:InvocationException error),	
-	JPValueListCollection executeComplexOsCommand(1: JPValueObjectList parameters) throws (1:InvocationException error),
-	JPValueObject executeOsCommand(1: JPValueObjectList parameters) throws (1:InvocationException error),
-	string executeSimpleOsCommand(1: JPValueObjectList parameters) throws (1:InvocationException error),
+	
+	JPValueListCollection executeComplexCommand(1: JPValueObjectList parameters) throws (1:InvocationException error),
+	JPValueObject executeCommand(1: JPValueObjectList parameters) throws (1:InvocationException error),
+	string executeSimpleCommand(1: JPValueObjectList parameters) throws (1:InvocationException error),
 }
 
 
