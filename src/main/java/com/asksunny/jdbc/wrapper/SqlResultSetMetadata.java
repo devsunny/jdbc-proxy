@@ -5,15 +5,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqlResultMetadata implements ResultSetMetaData {
+public class SqlResultSetMetadata implements ResultSetMetaData {
 
 	private List<ColumnMetaData> columnMetaDatas = null;
 
-	public SqlResultMetadata() {
+	public SqlResultSetMetadata() {
 		this.columnMetaDatas = new ArrayList<>();
 	}
 
-	public SqlResultMetadata(List<ColumnMetaData> columnMetaDatas) {
+	public SqlResultSetMetadata(List<ColumnMetaData> columnMetaDatas) {
 		this();
 		this.columnMetaDatas.addAll(columnMetaDatas);
 	}
