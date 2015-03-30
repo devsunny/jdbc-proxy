@@ -9,6 +9,8 @@ import java.sql.SQLException;
 
 public class SqlClob implements Clob {
 
+	
+	
 	public SqlClob() {		
 	}
 

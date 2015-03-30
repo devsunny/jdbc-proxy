@@ -3,9 +3,9 @@ package com.asksunny.jdbc.wrapper;
 import java.nio.ByteBuffer;
 import java.sql.ResultSet;
 
-public class ResultSetRowSerDe {
+public class SQLSerDe {
 
-	public ResultSetRowSerDe() {
+	public SQLSerDe() {
 	}
 
 	public byte[] serialize(ResultSet rs, int[] sqlTypes) {
